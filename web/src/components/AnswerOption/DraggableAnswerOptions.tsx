@@ -8,13 +8,15 @@ import {
     NotDraggingStyle,
 } from 'react-beautiful-dnd';
 import {
+    removeExtensionFromSingleAnswerOption,
     removeOptionFromAnswerOptionArray,
     reorderPositions,
     updateAnswerOption,
     updateAnswerOptionCode,
+    updateAnswerOptionExtension,
 } from '../../helpers/answerOptionHelper';
 import { QuestionnaireItem, QuestionnaireItemAnswerOption } from '../../types/fhir';
-import { IItemProperty } from '../../types/IQuestionnareItemType';
+import { IExtentionType, IItemProperty } from '../../types/IQuestionnareItemType';
 import AnswerOption from './AnswerOption';
 
 interface DraggableAnswerOptionsProps {
@@ -76,6 +78,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                             )}
                                         >
                                             <AnswerOption
+                                                item={item}
                                                 changeDisplay={(event) => {
                                                     const newArray = updateAnswerOption(
                                                         item.answerOption || [],
@@ -92,6 +95,23 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                     );
                                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                 }}
+                                                changeOrdinalValueExtension={(event) => {
+                                                    if (event.target.value === '') {
+                                                        const newArray = removeExtensionFromSingleAnswerOption(
+                                                            item.answerOption || [],
+                                                            answerOption.valueCoding?.id || '',
+                                                            IExtentionType.ordinalValue,
+                                                        );
+                                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                                    } else {
+                                                        const newArray = updateAnswerOptionExtension(
+                                                            item.answerOption || [],
+                                                            answerOption.valueCoding?.id || '',
+                                                            event.target.value,
+                                                        );
+                                                        dispatchUpdateItem(IItemProperty.answerOption, newArray);
+                                                    }
+                                                }}
                                                 deleteItem={() => {
                                                     const newArray = removeOptionFromAnswerOptionArray(
                                                         item.answerOption || [],
@@ -100,7 +120,7 @@ const DraggableAnswerOptions = ({ item, dispatchUpdateItem }: DraggableAnswerOpt
                                                     dispatchUpdateItem(IItemProperty.answerOption, newArray);
                                                 }}
                                                 answerOption={answerOption}
-                                                handleDrag={providedDrag.dragHandleProps}
+                                                handleDrag={providedDrag.dragHandleProps || undefined}
                                                 showDelete={
                                                     !!item.answerOption?.length && item.answerOption?.length > 2
                                                 }

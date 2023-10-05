@@ -1,3 +1,4 @@
+import { IExtentionType } from '../types/IQuestionnareItemType';
 import { QuestionnaireItemAnswerOption } from '../types/fhir';
 import createUUID from './CreateUUID';
 import { removeSpace } from './formatHelper';
@@ -23,6 +24,21 @@ export const addEmptyOptionToAnswerOptionArray = (
     // create new answerOption to add
     const newValueCoding = createNewAnswerOption(system);
     return [...values, newValueCoding];
+};
+
+export const addOrdinalValueExtensionToAllAnswerOptions = (
+    values: QuestionnaireItemAnswerOption[],
+    scoreValue: string,
+): QuestionnaireItemAnswerOption[] => {
+    const extensionToAdd = { url: IExtentionType.ordinalValue, valueDecimal: Number(scoreValue) };
+    return values.map((x) => {
+        return {
+            valueCoding: {
+                ...x.valueCoding,
+                extension: x.valueCoding?.extension?.concat(extensionToAdd),
+            },
+        } as QuestionnaireItemAnswerOption;
+    });
 };
 
 export const updateAnswerOption = (
@@ -60,6 +76,28 @@ export const updateAnswerOptionCode = (
     });
 };
 
+export const updateAnswerOptionExtension = (
+    values: QuestionnaireItemAnswerOption[],
+    targetId: string,
+    scoreValue: string,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return x.valueCoding?.id === targetId
+            ? ({
+                  valueCoding: {
+                      ...x.valueCoding,
+                      extension: [
+                          {
+                              url: IExtentionType.ordinalValue,
+                              valueDecimal: Number(scoreValue),
+                          },
+                      ],
+                  },
+              } as QuestionnaireItemAnswerOption)
+            : x;
+    });
+};
+
 export const updateAnswerOptionSystem = (
     values: QuestionnaireItemAnswerOption[],
     system: string,
@@ -79,6 +117,37 @@ export const removeOptionFromAnswerOptionArray = (
     targetId: string,
 ): QuestionnaireItemAnswerOption[] => {
     return values.filter((x) => x.valueCoding?.id !== targetId);
+};
+
+export const removeExtensionFromAnswerOptions = (
+    values: QuestionnaireItemAnswerOption[],
+    extensionUrl: IExtentionType,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return {
+            valueCoding: {
+                ...x.valueCoding,
+                extension: x.valueCoding?.extension?.filter((y) => y.url !== extensionUrl),
+            } as QuestionnaireItemAnswerOption,
+        };
+    });
+};
+
+export const removeExtensionFromSingleAnswerOption = (
+    values: QuestionnaireItemAnswerOption[],
+    valueCodingId: string,
+    extensionUrl: IExtentionType,
+): QuestionnaireItemAnswerOption[] => {
+    return values.map((x) => {
+        return x.valueCoding?.id === valueCodingId
+            ? {
+                  valueCoding: {
+                      ...x.valueCoding,
+                      extension: x.valueCoding?.extension?.filter((y) => y.url !== extensionUrl),
+                  } as QuestionnaireItemAnswerOption,
+              }
+            : x;
+    });
 };
 
 export const reorderPositions = (

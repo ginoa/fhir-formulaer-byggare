@@ -67,7 +67,7 @@ import { saveStateToDb } from './indexedDbHelper';
 import { isRecipientList } from '../../helpers/QuestionHelper';
 import { IExtentionType } from '../../types/IQuestionnareItemType';
 import { createVisibilityCoding, VisibilityType } from '../../helpers/globalVisibilityHelper';
-import { metaSecurityCode, getMetaSecurity } from '../../helpers/MetadataHelper';
+import { tjenesteomraadeCode, getTjenesteomraadeCoding } from '../../helpers/MetadataHelper';
 
 export type ActionType =
     | AddItemCodeAction
@@ -179,7 +179,7 @@ export interface TreeState {
 export const getInitialState = (): TreeState => {
     // Autocreates a random questionnaire id for the user which will be the default value
     if (initialState.qMetadata.id === undefined || initialState.qMetadata.id === '') {
-        initialState.qMetadata.id = crypto.randomUUID();
+        initialState.qMetadata.id = createUUID();
     }
     return initialState;
 };
@@ -205,7 +205,7 @@ const initialState: TreeState = {
                     display: INITIAL_LANGUAGE.display,
                 },
             ],
-            security: [getMetaSecurity(metaSecurityCode.helsehjelp)],
+            security: [getTjenesteomraadeCoding(tjenesteomraadeCode.helsehjelp)],
         },
         useContext: [],
         contact: [
@@ -245,7 +245,7 @@ function addLanguage(draft: TreeState, action: AddQuestionnaireLanguageAction) {
     }
     // Autocreates a random questionnaire id for the translated version for the user which will be the default value
     if (action.translation.metaData.id === undefined || action.translation.metaData.id === '') {
-        action.translation.metaData.id = crypto.randomUUID();
+        action.translation.metaData.id = createUUID();
     }
 
     draft.qAdditionalLanguages[action.additionalLanguageCode] = action.translation;
@@ -508,6 +508,8 @@ function updateSidebarTranslation(draft: TreeState, action: UpdateSidebarTransla
 }
 
 function updateQuestionnaireMetadataProperty(draft: TreeState, { propName, value }: UpdateQuestionnaireMetadataAction) {
+    console.log('propName', propName);
+    console.log('value', value);
     draft.qMetadata = {
         ...draft.qMetadata,
         [propName]: value,

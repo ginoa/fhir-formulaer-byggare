@@ -82,8 +82,11 @@ export enum IValueSetSystem {
 
 export enum ICodeSystem {
     renderOptionsCodeSystem = 'http://helsenorge.no/fhir/CodeSystem/RenderOptions',
+    choiceRenderOptions = 'http://helsenorge.no/fhir/CodeSystem/ChoiceRenderOptions',
     attachmentRenderOptions = 'http://helsenorge.no/fhir/CodeSystem/AttachmentRenderOptions',
     progressIndicatorOptions = 'http://helsenorge.no/fhir/CodeSystem/ProgressIndicatorOptions',
+    score = 'http://ehelse.no/Score',
+    scoringFormulas = 'http://ehelse.no/scoringFormulas',
 }
 
 export enum IExtentionType {
@@ -105,6 +108,7 @@ export enum IExtentionType {
     minValue = 'http://hl7.org/fhir/StructureDefinition/minValue',
     minLength = 'http://hl7.org/fhir/StructureDefinition/minLength',
     optionReference = 'http://ehelse.no/fhir/StructureDefinition/sdf-optionReference',
+    ordinalValue = 'http://hl7.org/fhir/StructureDefinition/ordinalValue',
     presentationbuttons = 'http://helsenorge.no/fhir/StructureDefinition/sdf-presentationbuttons',
     questionnaireUnit = 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
     regEx = 'http://hl7.org/fhir/StructureDefinition/regex',
@@ -129,4 +133,9 @@ export enum UseContextSystem {
     helsetjeneste_full = 'urn:oid:2.16.578.1.12.4.1.1.8655',
     journalinnsyn_basispluss = 'urn:oid:2.16.578.1.12.4.1.1.7614',
     registerinnsyn_basis = 'urn:oid:2.16.578.1.12.4.1.1.7615',
+}
+
+export enum MetaSecuritySystem {
+    tjenesteomraade = 'urn:oid:2.16.578.1.12.4.1.1.7618',
+    kanUtforesAv = 'http://helsenorge.no/fhir/KanUtforesAv',
 }

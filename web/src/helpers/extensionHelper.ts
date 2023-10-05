@@ -6,6 +6,10 @@ import { IQuestionnaireMetadata, IQuestionnaireMetadataType } from '../types/IQu
 import { IExtentionType, IValueSetSystem, IItemProperty } from '../types/IQuestionnareItemType';
 import createUUID from './CreateUUID';
 
+export const findExtensionInExtensionArray = (extensionArray: Extension[], url: string): Extension | undefined => {
+    return extensionArray.find((x) => x.url === url);
+};
+
 export const setItemExtension = (
     item: QuestionnaireItem,
     extensionValue: Extension,

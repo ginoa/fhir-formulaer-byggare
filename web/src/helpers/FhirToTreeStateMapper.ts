@@ -30,7 +30,7 @@ import {
 import { IExtentionType } from '../types/IQuestionnareItemType';
 import { initPredefinedValueSet } from './initPredefinedValueSet';
 import { getValueSetValues } from './valueSetHelper';
-import { addMetaSecurityIfDoesNotExist } from './MetadataHelper';
+import { addMetaSecurityIfDoesNotExist, addMetaSecurityIfCanBePerformedByExist } from './MetadataHelper';
 
 function extractMetadata(questionnaireObj: Questionnaire) {
     const getMetadataParts = ({
@@ -144,8 +144,9 @@ function translateContained(base: Array<ValueSet>, translation: Array<ValueSet>)
 function translateItem(translationItem: QuestionnaireItem | undefined): ItemTranslation {
     const answerOptions = translateAnswerOptions(translationItem?.answerOption);
     const entryFormatText = getPlaceHolderText(translationItem);
-    const markdownValue = translationItem?._text?.extension?.find((ext) => ext.url === IExtentionType.markdown)
-        ?.valueMarkdown;
+    const markdownValue = translationItem?._text?.extension?.find(
+        (ext) => ext.url === IExtentionType.markdown,
+    )?.valueMarkdown;
     const text = markdownValue || translationItem?.text || '';
     const validationText = getValidationMessage(translationItem);
     const initial = getInitialText(translationItem);
@@ -256,6 +257,7 @@ export function mapToTreeState(resource: Bundle | Questionnaire): TreeState {
         mainQuestionnaire = resource as Questionnaire;
     }
     mainQuestionnaire = addMetaSecurityIfDoesNotExist(mainQuestionnaire);
+    mainQuestionnaire = addMetaSecurityIfCanBePerformedByExist(mainQuestionnaire);
     const qMetadata: IQuestionnaireMetadata = extractMetadata(mainQuestionnaire);
     const qContained = (mainQuestionnaire.contained as Array<ValueSet>) || []; // we expect contained to only contain ValueSets
     const { qItems, qOrder } = extractItemsAndOrder(mainQuestionnaire.item);

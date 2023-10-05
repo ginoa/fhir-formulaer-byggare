@@ -31,12 +31,14 @@ import {
     ItemControlType,
     setItemControlExtension,
     isItemControlDataReceiver,
+    existItemWithCode,
 } from '../../helpers/itemControl';
 import GuidanceAction from './Guidance/GuidanceAction';
 import GuidanceParam from './Guidance/GuidanceParam';
 import FhirPathSelect from './FhirPathSelect/FhirPathSelect';
 import CalculatedExpression from './CalculatedExpression/CalculatedExpression';
 import CopyFrom from './CopyFrom/CopyFrom';
+import View from './View/view';
 import { createMarkdownExtension, removeItemExtension, setItemExtension } from '../../helpers/extensionHelper';
 import InputField from '../InputField/inputField';
 import {
@@ -52,8 +54,11 @@ import {
     canTypeCopyData,
 } from '../../helpers/questionTypeFeatures';
 import RadioBtn from '../RadioBtn/RadioBtn';
-import { elementSaveCapability } from '../../helpers/QuestionHelper';
-import { renderingOptions, removeItemCode, addItemCode, RenderingOptionsEnum } from '../../helpers/codeHelper';
+import { QSCoding, elementSaveCapability, scoreCoding, scoreSumOptions } from '../../helpers/QuestionHelper';
+import { addItemCode, removeItemCode } from '../../helpers/codeHelper';
+import { ScoringFormulaCodes } from '../../types/scoringFormulas';
+import { getScoringFormulaName, getSelectedScoringCode } from '../../utils/scoringUtils';
+import { removeOrdinalValueExtensionfromAnswerOptions } from '../../utils/answerOptionExtensionUtils';
 
 type AdvancedQuestionOptionsProps = {
     item: QuestionnaireItem;
@@ -69,6 +74,9 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const [linkId, setLinkId] = useState(props.item.linkId);
     const { qItems, qOrder } = state;
     const [isDataReceiver, setDataReceiverState] = useState(isItemControlDataReceiver(props.item));
+    const [hasQuestionScoreCode, setHasQuestionScoreCode] = useState(
+        existItemWithCode(props.item, ScoringFormulaCodes.questionScore),
+    );
 
     const dispatchUpdateItem = (name: IItemProperty, value: boolean) => {
         dispatch(updateItemAction(props.item.linkId, name, value));
@@ -141,28 +149,6 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
     const hasSummaryContainerExtension = isItemControlSummaryContainer(props.item);
 
     const helpTextItem = getHelpTextItem();
-    const checkedView = () => {
-        return props.item.extension?.find((ex) => ex.url === IExtentionType.hidden)?.valueBoolean
-            ? RenderingOptionsEnum.Hidden
-            : props.item.code?.find((codee) => codee.system === ICodeSystem.renderOptionsCodeSystem)?.code ??
-                  RenderingOptionsEnum.None;
-    };
-    const onChangeView = (newValue: string) => {
-        removeItemExtension(props.item, IExtentionType.hidden, dispatch);
-        removeItemCode(props.item, ICodeSystem.renderOptionsCodeSystem, dispatch);
-        switch (newValue) {
-            case RenderingOptionsEnum.Hidden:
-                const extension = {
-                    url: IExtentionType.hidden,
-                    valueBoolean: true,
-                };
-                setItemExtension(props.item, extension, dispatch);
-                break;
-            default:
-                addItemCode(props.item, newValue, dispatch);
-                break;
-        }
-    };
 
     const isGroupItemOnGlobalLevel = (groupId: string): boolean => {
         return qOrder.find((i) => i.linkId === groupId) ? true : false;
@@ -447,14 +433,7 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     )}
                 </>
             )}
-            <FormField label={t('View')} sublabel={t('Choose if/where the component should be displayed')}>
-                <RadioBtn
-                    onChange={onChangeView}
-                    checked={checkedView()}
-                    options={renderingOptions}
-                    name={'elementView-radio'}
-                />
-            </FormField>
+            <View item={props.item} />
             <FormField label={t('Save capabilities')}>
                 <RadioBtn
                     onChange={(newValue: string) => {
@@ -482,6 +461,75 @@ const AdvancedQuestionOptions = (props: AdvancedQuestionOptionsProps): JSX.Eleme
                     name={'elementSaveCapability-radio'}
                 />
             </FormField>
+
+            {(props.item.type === IQuestionnaireItemType.integer ||
+                props.item.type === IQuestionnaireItemType.decimal ||
+                props.item.type === IQuestionnaireItemType.quantity) && (
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Summation field')}
+                            sublabel={t(
+                                'Select whether the field should be a summation field for section score or total score',
+                            )}
+                        ></FormField>
+                    </div>
+                    <FormField>
+                        <RadioBtn
+                            onChange={(newValue: string) => {
+                                if (newValue === '0') {
+                                    removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
+                                } else {
+                                    removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
+                                    addItemCode(props.item, scoreCoding, dispatch);
+                                    addItemCode(
+                                        props.item,
+                                        {
+                                            system: ICodeSystem.scoringFormulas,
+                                            code: newValue,
+                                            display: getScoringFormulaName(newValue),
+                                        },
+                                        dispatch,
+                                    );
+                                }
+                            }}
+                            checked={props.item.code ? getSelectedScoringCode(props.item.code) : '0'}
+                            options={scoreSumOptions}
+                            name={'scoreSumOptions-radio'}
+                        />
+                    </FormField>
+                </>
+            )}
+            {props.item.type === IQuestionnaireItemType.choice && (
+                <>
+                    <div className="horizontal full">
+                        <FormField
+                            label={t('Scoring')}
+                            sublabel={t('Select whether the field should be a scoring field')}
+                        ></FormField>
+                    </div>
+                    <FormField>
+                        <SwitchBtn
+                            onChange={() => {
+                                if (hasQuestionScoreCode) {
+                                    removeItemCode(props.item, ICodeSystem.score, dispatch);
+                                    removeItemCode(props.item, ICodeSystem.scoringFormulas, dispatch);
+                                    removeOrdinalValueExtensionfromAnswerOptions(props.item, dispatch);
+                                    setHasQuestionScoreCode(false);
+                                } else {
+                                    addItemCode(props.item, scoreCoding, dispatch);
+                                    addItemCode(props.item, QSCoding, dispatch);
+                                    setHasQuestionScoreCode(true);
+                                }
+                            }}
+                            value={hasQuestionScoreCode}
+                            label={t('Scoring field')}
+                        />
+                    </FormField>
+                </>
+            )}
         </>
     );
 };

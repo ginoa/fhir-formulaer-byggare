@@ -21,6 +21,7 @@ export enum ItemControlType {
     dynamic = 'dynamic',
     dataReceiver = 'data-receiver',
     step = 'step',
+    score = 'score',
 }
 
 export const createItemControlExtension = (itemControlType: ItemControlType): Extension => {
@@ -75,6 +76,11 @@ const existItemControlWithCode = (item: QuestionnaireItem, code: string): boolea
             ?.find((x: Extension) => x.valueCodeableConcept?.coding?.some((s: Coding) => s.code === code)) !==
         undefined;
     return exist;
+};
+
+export const existItemWithCode = (item: QuestionnaireItem, code: string): boolean => {
+    const exist = item.code?.find((x: Coding) => x.code === code);
+    return exist ? true : false;
 };
 
 const existItemControlExtension = (item: QuestionnaireItem): boolean => {
