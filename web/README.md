@@ -15,6 +15,3 @@ Either open the demo at [formdesigner.helsenorgelab.no/](https://formdesigner.he
 ## Netlify functions
 
 Run `npm install -g netlify-cli` before running npm run functions :)
-
-## Docker
-See [Dockerfile](Dockerfile) for info.
