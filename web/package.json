@@ -2,6 +2,10 @@
     "name": "formbuilder",
     "version": "1.0.0",
     "private": true,
+    "engines": {
+        "node": "^14.15.0 <15.0.0",
+        "npm": ">=7.0.0"
+    },
     "dependencies": {
         "@ckeditor/ckeditor5-react": "^3.0.0",
         "@helsenorge/autosuggest": "^27.1.4",
