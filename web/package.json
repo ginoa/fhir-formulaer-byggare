@@ -59,7 +59,6 @@
         "not dead",
         "not op_mini all"
     ],
-    "proxy": "http://localhost:8888",
     "devDependencies": {
         "@testing-library/jest-dom": "^5.11.9",
         "@testing-library/react": "^11.2.3",
