@@ -20,7 +20,7 @@
     "@helsenorge/date-time": "^28.2.1",
     "@helsenorge/designsystem-react": "^4.3.0",
     "@helsenorge/file-upload": "^28.2.1",
-    "@helsenorge/form": "^28.2.1",
+    "@helsenorge/form": "^28.2.2",
     "@helsenorge/refero": "^13.1.0",
     "@helsenorge/toolkit": "^21.3.0-prerelease",
     "@nosferatu500/react-sortable-tree": "^3.0.3",
