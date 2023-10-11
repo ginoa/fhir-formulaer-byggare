@@ -1,20 +1,27 @@
-# Structor - FHIR form builder
+# React + TypeScript + Vite
 
-Structor form builder is an open source tool for building FHIR Questionnaire forms. A live demo could be found at [formdesigner.helsenorgelab.no/](https://formdesigner.helsenorgelab.no/).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## FHIR Questionnaires
+Currently, two official plugins are available:
 
-The FHIR specification defines [Questionnaires](https://www.hl7.org/fhir/questionnaire.html): 
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-> A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
+## Expanding the ESLint configuration
 
-## Quickstart
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-Either open the demo at [formdesigner.helsenorgelab.no/](https://formdesigner.helsenorgelab.no/) or clone this repo, install Typescript, run `npm install` and run `npm start`.
+- Configure the top-level `parserOptions` property like this:
 
-## Netlify functions
+```js
+   parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+   },
+```
 
-Run `npm install -g netlify-cli` before running npm run functions :)
-
-## Docker
-See [Dockerfile](Dockerfile) for info.
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list

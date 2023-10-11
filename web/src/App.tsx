@@ -1,13 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Routes from '../src/router/index';
+ import './index.css';
+ import './components/Refero/styles/refero.scss';
 
-function App(): JSX.Element {
-    return (
-        <Router>
-            <Routes />
-        </Router>
-    );
+ import './App.css';
+
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import Routes from "./router/index";
+
+function App() {
+  return (
+    <>
+      <Router>
+        <Routes></Routes>
+      </Router>
+    </>
+  );
 }
 
 export default App;
