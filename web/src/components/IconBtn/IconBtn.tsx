@@ -9,7 +9,7 @@ type IconBtnProps = {
     size?: 'large';
 };
 
-const IconBtn = ({ type, title, onClick, color = 'white', size }: IconBtnProps): JSX.Element => {
+const IconBtn = ({ type, title, onClick, color = 'white', size }: IconBtnProps): React.JSX.Element => {
     const classNames: Array<string> = ['iconBtn'];
     if (color) {
         classNames.push(color);
