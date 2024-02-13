@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { BundleEntry, ValueSet } from '../../types/fhir';
+import { BundleEntry, ValueSet } from 'fhir/r4';
 import Btn from '../Btn/Btn';
 import FormField from '../FormField/FormField';
 import Modal from '../Modal/Modal';
