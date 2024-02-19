@@ -16,7 +16,7 @@ type Props = {
     close: () => void;
 };
 
-const ImportValueSet = ({ close }: Props): React.JSX.Element => {
+const ImportValueSet = ({ close }: Props): JSX.Element => {
     const uploadRef = React.useRef<HTMLInputElement>(null);
     const { t } = useTranslation();
     const { dispatch, state } = useContext(TreeContext);
