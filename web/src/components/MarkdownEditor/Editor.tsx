@@ -1,61 +1,72 @@
-import {Autoformat} from "@ckeditor/ckeditor5-autoformat";
-import {BlockQuote} from "@ckeditor/ckeditor5-block-quote";
-import { Bold } from "@ckeditor/ckeditor5-basic-styles";
-import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
-import {Essentials} from "@ckeditor/ckeditor5-essentials/";
-import {Heading} from "@ckeditor/ckeditor5-heading";
-import {Italic} from "@ckeditor/ckeditor5-basic-styles";
-import {Link} from "@ckeditor/ckeditor5-link";
-import {List} from "@ckeditor/ckeditor5-list";
-import {Markdown} from "@ckeditor/ckeditor5-markdown-gfm";
-import {Paragraph} from "@ckeditor/ckeditor5-paragraph";
-import {PasteFromOffice} from "@ckeditor/ckeditor5-paste-from-office";
-import {Table} from "@ckeditor/ckeditor5-table";
-import {TableToolbar} from "@ckeditor/ckeditor5-table";
-import {TextTransformation} from "@ckeditor/ckeditor5-typing";
+/**
+ * @license Copyright (c) 2014-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+import "../../../node_modules/ckeditor5/dist/ckeditor5.css"
+import "../../../node_modules/ckeditor5/dist/ckeditor5-editor.css"
+import "../../../node_modules/ckeditor5/dist/ckeditor5-content.css"
 
-class MarkdownEditor extends ClassicEditor {}
+import {
+    TextTransformation,
+    TableToolbar,
+    Table,
+    PasteFromOffice,
+    Paragraph,
+    Markdown,
+    List,
+    Link,
+    Italic,
+    Heading,
+    Essentials,
+    ClassicEditor,
+    Bold,
+    Autoformat,
+    BlockQuote,
+  } from "ckeditor5";
+  
+ class MarkdownEditor extends ClassicEditor {}
 
-// Plugins to include in the build.
-MarkdownEditor.builtinPlugins = [
-  Autoformat,
-  BlockQuote,
-  Bold,
-  Essentials,
-  Heading,
-  Italic,
-  Link,
-  List,
-  Markdown,
-  Paragraph,
-  PasteFromOffice,
-  Table,
-  TableToolbar,
-  TextTransformation,
-];
-
-// Editor configuration.
-MarkdownEditor.defaultConfig = {
-  toolbar: {
-    items: [
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "|",
-      "link",
-      "bulletedList",
-      "numberedList",
-      "|",
-      "undo",
-      "redo",
-    ],
-  },
-  table: {
-    contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
-  },
-};
-
-export default MarkdownEditor;
+  // Plugins to include in the build.
+  MarkdownEditor.builtinPlugins = [
+    Autoformat,
+    BlockQuote,
+    Bold,
+    Essentials,
+    Heading,
+    Italic,
+    Link,
+    List,
+    Markdown,
+    Paragraph,
+    PasteFromOffice,
+    Table,
+    TableToolbar,
+    TextTransformation,
+  ];
+  
+  // Editor configuration.
+  MarkdownEditor.defaultConfig = {
+    toolbar: {
+      items: [
+        "heading",
+        "|",
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "|",
+        "link",
+        "bulletedList",
+        "numberedList",
+        "|",
+        "undo",
+        "redo",
+      ],
+    },
+    table: {
+      contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
+    },
+  };
+  
+  export default MarkdownEditor;
+  
