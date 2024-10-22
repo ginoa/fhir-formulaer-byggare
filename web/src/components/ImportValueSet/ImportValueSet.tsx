@@ -29,6 +29,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
   const [valueSetToAdd, setValueSetToAdd] = useState<string[]>([]);
   const [fileUploadError, setFileUploadError] = useState<string>("");
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   async function fetchValueSets() {
     const response = await fetch(url, {
       method: "GET",
@@ -70,7 +71,9 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
     return { valueSet };
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
     setValueSets(null);
     setError(null);
@@ -96,7 +99,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
     }
   };
 
-  const handleChangeUrl = (value: string) => {
+  const handleChangeUrl = (value: string): void => {
     setUrl(value);
 
     if (value === "") {
@@ -105,7 +108,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
     }
   };
 
-  const handleAddNewValueSet = () => {
+  const handleAddNewValueSet = (): void => {
     const valueSetsToImport = valueSets?.filter(
       (x) => x.id && valueSetToAdd.includes(x.id),
     );
@@ -116,7 +119,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
     close();
   };
 
-  const handleCheck = (checked: boolean, id?: string) => {
+  const handleCheck = (checked: boolean, id?: string): void => {
     const itemToRemove = [...valueSetToAdd].findIndex((x) => x === id);
     if (checked && id) {
       setValueSetToAdd([...valueSetToAdd, id]);
@@ -129,14 +132,14 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
 
   const uploadValueSets = async (
     event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  ): Promise<void> => {
     if (event.target.files && event.target.files.length > 0) {
       const files = Array.from(event.target.files).map((file) => {
         const reader = new FileReader();
         return new Promise((resolve) => {
           // Resolve the promise after reading file
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = () => {
+          reader.onload = (): void => resolve(reader.result);
+          reader.onerror = (): void => {
             setFileUploadError("Could not read uploaded file");
           };
 
@@ -194,6 +197,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
               type="url"
               value={url}
               required
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
             />
             <Btn title={t("search")} variant="primary" type="submit" />
@@ -253,9 +257,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
                   </p>
                   <ul>
                     {getValueSetValues(x).map((p) => (
-                      <li key={p.code}>
-                        {p.display} ({p.code})
-                      </li>
+                      <li key={p.code}>{`${p.display} (${p.code})`}</li>
                     ))}
                   </ul>
                 </div>
