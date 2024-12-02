@@ -39,7 +39,9 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
     });
 
     if (!response.ok || !response.json) {
-      const message = `${t("There was en error with status:")} ${response.status}`;
+      const message = `${t("There was en error with status:")} ${
+        response.status
+      }`;
       return { error: message };
     }
 
@@ -50,7 +52,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
     }
 
     const valueSetFHIR = bundle.entry.map(
-      (x: BundleEntry) => x.resource,
+      (x: BundleEntry) => x.resource
     ) as ValueSet[];
 
     const valueSet = valueSetFHIR.map((x) => {
@@ -72,7 +74,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
   }
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
     setValueSets(null);
@@ -110,7 +112,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
 
   const handleAddNewValueSet = (): void => {
     const valueSetsToImport = valueSets?.filter(
-      (x) => x.id && valueSetToAdd.includes(x.id),
+      (x) => x.id && valueSetToAdd.includes(x.id)
     );
 
     if (valueSetsToImport && valueSetsToImport?.length > 0) {
@@ -131,7 +133,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
   };
 
   const uploadValueSets = async (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     if (event.target.files && event.target.files.length > 0) {
       const files = Array.from(event.target.files).map((file) => {
@@ -166,7 +168,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
 
       // do not add existing valueSets again
       const filteredToAdd = toAdd.filter(
-        (x) => state.qContained?.findIndex((y) => y.id === x.id) === -1,
+        (x) => state.qContained?.findIndex((y) => y.id === x.id) === -1
       );
       setValueSets([...(valueSets || []), ...filteredToAdd]);
       setValueSetToAdd([
@@ -190,7 +192,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
             <input
               placeholder="https:// .. /ValueSet or https:// .. /ValueSet/[id]"
               title={t(
-                "Make sure the URL ends with /ValueSet or /Valueset/[id]",
+                "Make sure the URL ends with /ValueSet or /Valueset/[id]"
               )}
               onChange={(e) => handleChangeUrl(e.target.value)}
               pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
@@ -214,7 +216,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
         <div>
           <div>
             {t(
-              "Upload ValueSets as json files. Accepts a Bundle or ValueSet in a single file. It is possible to upload several files at once",
+              "Upload ValueSets as json files. Accepts a Bundle or ValueSet in a single file. It is possible to upload several files at once"
             )}
           </div>
           <div>
@@ -271,7 +273,7 @@ const ImportValueSet = ({ close }: Props): React.JSX.Element => {
               <p>
                 {t("Add ({0} ValueSet) in predefined valuesets").replace(
                   "{0}",
-                  valueSetToAdd.length.toString(),
+                  valueSetToAdd.length.toString()
                 )}
               </p>
               <Btn
