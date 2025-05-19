@@ -1,7 +1,7 @@
 import { ValidationError } from "src/utils/validationUtils";
 
-import { getValidationError } from "../components/Validation/validationHelper";
-import { ErrorLevel } from "../components/Validation/validationTypes";
+import { getValidationError } from "./validation/validationHelper";
+import { ErrorLevel } from "./validation/validationTypes";
 
 export const getTextValidationErrorClassName = (
   error: ValidationError,
