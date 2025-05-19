@@ -1,17 +1,17 @@
 import { ValidationError } from "src/utils/validationUtils";
 
-import { getValidationError } from "./validation/validationHelper";
-import { ErrorLevel } from "./validation/validationTypes";
+import { getValidationError } from "../components/Validation/validationHelper";
+import { ErrorLevel } from "../components/Validation/validationTypes";
 
 export const getTextValidationErrorClassName = (
   error: ValidationError,
-): string => {
+): string | undefined => {
   switch (error.errorLevel) {
     case ErrorLevel.info:
       return "msg-info";
     case ErrorLevel.warning:
       return "msg-warning";
-    default:
+    case ErrorLevel.error:
       return "msg-error";
   }
 };
@@ -19,14 +19,14 @@ export const getTextValidationErrorClassName = (
 export const getValidaitonClassNameWithPropsName = (
   propsname: string,
   validationErrors: ValidationError[],
-): string => {
+): string | undefined => {
   const error = getValidationError(propsname, validationErrors);
   return getValidationClassName(error);
 };
 
 export const getValidationClassName = (
   validationError: ValidationError | undefined,
-): string => {
+): string | undefined => {
   switch (validationError?.errorLevel) {
     case ErrorLevel.info:
       return "validation-info";
@@ -34,7 +34,5 @@ export const getValidationClassName = (
       return "validation-warning";
     case ErrorLevel.error:
       return "validation-error";
-    default:
-      return "";
   }
 };
