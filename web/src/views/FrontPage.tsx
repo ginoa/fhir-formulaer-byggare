@@ -19,6 +19,9 @@ import {
 import { resetQuestionnaireAction } from "../store/treeStore/treeActions";
 import { TreeContext, TreeState } from "../store/treeStore/treeStore";
 import "./FrontPage.css";
+import createUUID from '../helpers/CreateUUID';
+import StandardQuestionnaire from '../assets/standardfrågor.json';
+import { mapToTreeState } from "src/helpers/FhirToTreeStateMapper";
 
 const FrontPage = (): React.JSX.Element => {
   const { t } = useTranslation();
@@ -60,6 +63,26 @@ const FrontPage = (): React.JSX.Element => {
     await saveQuestionnaire(state);
     navigate(`/formbuilder/${state.qMetadata.id}`);
   };
+  const handleSetStandardQuestionnaire = async (): Promise<void> => {
+    
+    // reads standard questionnaire from file
+    const StandardQuestionnaireParsed = JSON.parse(JSON.stringify(StandardQuestionnaire));
+
+    // resets some metadata properties
+    StandardQuestionnaireParsed.title = '';
+    StandardQuestionnaireParsed.name = '';
+    StandardQuestionnaireParsed.description = '';
+    const NewUUID = createUUID();
+    StandardQuestionnaireParsed.id = NewUUID;
+    StandardQuestionnaireParsed.url = "Questionnaire/" + NewUUID;
+
+    // maps questionnaire to Tree
+    const state = mapToTreeState(StandardQuestionnaireParsed);
+    dispatch(resetQuestionnaireAction(state));
+
+    await saveQuestionnaire(state);
+    navigate(`/formbuilder/${state.qMetadata.id}`);
+  };
 
   return (
     <>
@@ -91,7 +114,13 @@ const FrontPage = (): React.JSX.Element => {
         />
         <Btn
           onClick={handleSetNewQuestionnaire}
-          title={t("New questionnaire")}
+          title={t("New empty questionnaire")}
+          variant="primary"
+        />
+        {` `}
+        <Btn
+          onClick={handleSetStandardQuestionnaire}
+          title={t("New standard questionnaire")}
           variant="primary"
         />
         {` `}

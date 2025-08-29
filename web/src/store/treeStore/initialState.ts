@@ -10,10 +10,6 @@ import {
 } from "../../helpers/globalVisibilityHelper";
 import { initPredefinedValueSet } from "../../helpers/initPredefinedValueSet";
 import { INITIAL_LANGUAGE } from "../../helpers/LanguageHelper";
-import {
-  getTjenesteomraadeCoding,
-  tjenesteomraadeCode,
-} from "../../helpers/MetadataHelper";
 
 const initialState: TreeState = {
   isEdited: false,
