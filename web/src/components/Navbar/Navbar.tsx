@@ -66,7 +66,7 @@ const Navbar = ({
   };
 
   const getFileName = (): string => {
-    let technicalName = state.qMetadata.name || "skjema";
+    let technicalName = state.qMetadata.name || "formulär";
     technicalName =
       technicalName.length > 40
         ? technicalName.substring(0, 40) + "..."
@@ -219,6 +219,17 @@ const Navbar = ({
                   callbackAndHide(() => {
                     i18n.changeLanguage("en-US");
                     localStorage.setItem("editor_language", "en-US");
+                  })
+                }
+              />
+            )}
+            {i18n.language !== "sv-SE" && (
+              <Btn
+                title={t("Change to Swedish")}
+                onClick={() =>
+                  callbackAndHide(() => {
+                    i18n.changeLanguage("sv-SE");
+                    localStorage.setItem("editor_language", "sv-SE");
                   })
                 }
               />

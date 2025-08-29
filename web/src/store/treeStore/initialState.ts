@@ -27,22 +27,21 @@ const initialState: TreeState = {
     language: INITIAL_LANGUAGE.code,
     name: "",
     status: "draft",
-    publisher: "NHN",
+    publisher: "EHM",
     meta: {
-      profile: ["http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire"],
+      profile: ["http://electronichealth.se/fhir/smc/StructureDefinition/SMCQuestionnaire"],
       tag: [
         {
           system: "urn:ietf:bcp:47",
-          code: INITIAL_LANGUAGE.code,
-          display: INITIAL_LANGUAGE.display,
+          code: "sv-SE",
+          display: "Svenska",
         },
       ],
-      security: [getTjenesteomraadeCoding(tjenesteomraadeCode.helsehjelp)],
     },
     useContext: [],
     contact: [
       {
-        name: "http://www.nhn.no",
+        name: "https://www.ehalsomyndigheten.se",
       },
     ],
     subjectType: ["Patient"],

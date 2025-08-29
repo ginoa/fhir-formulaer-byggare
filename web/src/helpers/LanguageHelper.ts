@@ -13,21 +13,22 @@ import { isValidId } from "./MetadataHelper";
 import { Languages, TreeState } from "../store/treeStore/treeStore";
 
 export const INITIAL_LANGUAGE: Language = {
-  code: "nb-NO",
-  display: "Bokmål",
-  localDisplay: "Bokmål",
+  code: "sv-SE",
+  display: "Svenska",
+  localDisplay: "Svenska",
 };
 
 export const supportedLanguages: Language[] = [
   INITIAL_LANGUAGE,
-  { code: "nn-NO", display: "Nynorsk", localDisplay: "Nynorsk" },
-  { code: "se-NO", display: "Samisk", localDisplay: "Davvisámegillii" },
-  { code: "en-GB", display: "Engelsk", localDisplay: "English" },
-  { code: "pl-PL", display: "Polsk", localDisplay: "Polskie" },
-  { code: "ro-RO", display: "Rumensk", localDisplay: "Română" },
-  { code: "lt-LT", display: "Litauisk", localDisplay: "Lietuvis" },
-  { code: "ru-RU", display: "Russisk", localDisplay: "русский" },
-  { code: "fr-FR", display: "Fransk", localDisplay: "Français" },
+  { code: 'nb-NO', display: 'Norska (Bokmål)', localDisplay: 'Bokmål'},
+  { code: "nn-NO", display: "Norska (nynorsk)", localDisplay: "Nynorsk" },
+  { code: "se-NO", display: "Samiska", localDisplay: "Davvisámegillii" },
+  { code: "en-GB", display: "Engelska", localDisplay: "English" },
+  { code: "pl-PL", display: "Polska", localDisplay: "Polskie" },
+  { code: "ro-RO", display: "Rumenska", localDisplay: "Română" },
+  { code: "lt-LT", display: "Litauiska", localDisplay: "Lietuvis" },
+  { code: "ru-RU", display: "Rysska", localDisplay: "русский" },
+  { code: "fr-FR", display: "Franska", localDisplay: "Français" },
 ];
 
 export const getLanguageFromCode = (

@@ -186,7 +186,7 @@ const PredefinedValueSetModal = (props: Props): React.JSX.Element => {
               }
             />
           </FormField>
-          <FormField label={t("Teknisk-navn")}>
+          <FormField label={t("Technical name")}>
             <InputField
               value={newValueSet.name}
               onChange={(event) =>
